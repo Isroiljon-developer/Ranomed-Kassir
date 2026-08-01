@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import MainLayout from '../layout/MainLayout.jsx';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
@@ -65,7 +65,7 @@ export default function Profile() {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
         toast.success('Tizimdan chiqdingiz');
-        window.location.href = 'http://localhost:5173/login';
+        window.location.href = '/login';
     };
 
     if (loading) return <MainLayout title="Profil"><div className="p-4">Yuklanmoqda...</div></MainLayout>;
@@ -155,4 +155,5 @@ export default function Profile() {
         </MainLayout>
     );
 }
+
 

@@ -1,4 +1,4 @@
-import { NavLink, useLocation } from 'react-router-dom';
+﻿import { NavLink, useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
 export default function Sidebar() {
@@ -7,27 +7,27 @@ export default function Sidebar() {
     const user = JSON.parse(localStorage.getItem('user') || '{}');
 
     const menuItems = [
-        { path: '/', icon: '📊', label: 'Dashboard', section: 'ASOSIY' },
-        { path: '/pending', icon: '⏳', label: "To'lanmaganlar", section: null },
-        { path: '/billing', icon: '🧾', label: 'Bemor Hisobi', section: null },
-        { path: '/wards', icon: '🛏️', label: 'Palata Hisobi', section: 'MOLIYA' },
-        { path: '/receipts', icon: '📄', label: 'Cheklar', section: null },
-        { path: '/reports', icon: '📈', label: 'Hisobotlar', section: null },
-        { path: '/bez-ochirit', icon: '🎫', label: 'Bez Ochirit', section: 'QO\'SHIMCHA' },
-        { path: '/profile', icon: '👤', label: 'Profil', section: 'SHAXSIY' },
+        { path: '/', icon: 'рџ“Љ', label: 'Dashboard', section: 'ASOSIY' },
+        { path: '/pending', icon: 'вЏі', label: "To'lanmaganlar", section: null },
+        { path: '/billing', icon: 'рџ§ѕ', label: 'Bemor Hisobi', section: null },
+        { path: '/wards', icon: 'рџ›ЏпёЏ', label: 'Palata Hisobi', section: 'MOLIYA' },
+        { path: '/receipts', icon: 'рџ“„', label: 'Cheklar', section: null },
+        { path: '/reports', icon: 'рџ“€', label: 'Hisobotlar', section: null },
+        { path: '/bez-ochirit', icon: 'рџЋ«', label: 'Bez Ochirit', section: 'QO\'SHIMCHA' },
+        { path: '/profile', icon: 'рџ‘¤', label: 'Profil', section: 'SHAXSIY' },
     ];
 
     const handleLogout = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
-        window.location.href = 'http://localhost:5173/login';
+        window.location.href = '/login';
     };
 
     return (
         <aside className="sidebar">
             <div className="sidebar-header">
                 <div className="sidebar-logo">
-                    <div className="sidebar-logo-icon">💰</div>
+                    <div className="sidebar-logo-icon">рџ’°</div>
                     <div>
                         <div className="sidebar-title">Ranomed -2 </div>
                         <div className="sidebar-subtitle">Kassir Panel</div>
@@ -67,10 +67,11 @@ export default function Sidebar() {
                         <div className="sidebar-user-role">Kassir</div>
                     </div>
                     <button className="sidebar-logout-btn" onClick={handleLogout} title="Chiqish">
-                        🚪
+                        рџљЄ
                     </button>
                 </div>
             </div>
         </aside>
     );
 }
+
