@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+﻿import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'sonner';
 import Login from './pages/Login.jsx';
 import Dashboard from './pages/Dashboard.jsx';
@@ -27,7 +27,7 @@ import BezOchirit from './pages/BezOchirit.jsx';
 function PrivateRoute({ children }) {
     const token = localStorage.getItem('token');
     if (!token) {
-        window.location.href = 'http://localhost:5173/login';
+        window.location.href = '/login';
         return null;
     }
     return children;
