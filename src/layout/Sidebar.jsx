@@ -1,5 +1,17 @@
-﻿import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { 
+    LayoutDashboard, 
+    Hourglass, 
+    UserPlus, 
+    BedDouble, 
+    ReceiptText, 
+    FileBarChart, 
+    Ticket, 
+    User,
+    LogOut,
+    Wallet
+} from 'lucide-react';
 
 export default function Sidebar() {
     const location = useLocation();
@@ -7,14 +19,14 @@ export default function Sidebar() {
     const user = JSON.parse(localStorage.getItem('user') || '{}');
 
     const menuItems = [
-        { path: '/', icon: 'рџ“Љ', label: 'Dashboard', section: 'ASOSIY' },
-        { path: '/pending', icon: 'вЏі', label: "To'lanmaganlar", section: null },
-        { path: '/billing', icon: 'рџ§ѕ', label: 'Bemor Hisobi', section: null },
-        { path: '/wards', icon: 'рџ›ЏпёЏ', label: 'Palata Hisobi', section: 'MOLIYA' },
-        { path: '/receipts', icon: 'рџ“„', label: 'Cheklar', section: null },
-        { path: '/reports', icon: 'рџ“€', label: 'Hisobotlar', section: null },
-        { path: '/bez-ochirit', icon: 'рџЋ«', label: 'Bez Ochirit', section: 'QO\'SHIMCHA' },
-        { path: '/profile', icon: 'рџ‘¤', label: 'Profil', section: 'SHAXSIY' },
+        { path: '/', icon: <LayoutDashboard size={20} />, label: 'Dashboard', section: 'ASOSIY' },
+        { path: '/pending', icon: <Hourglass size={20} />, label: "To'lanmaganlar", section: null },
+        { path: '/billing', icon: <UserPlus size={20} />, label: 'Bemor Hisobi', section: null },
+        { path: '/wards', icon: <BedDouble size={20} />, label: 'Palata Hisobi', section: 'MOLIYA' },
+        { path: '/receipts', icon: <ReceiptText size={20} />, label: 'Cheklar', section: null },
+        { path: '/reports', icon: <FileBarChart size={20} />, label: 'Hisobotlar', section: null },
+        { path: '/bez-ochirit', icon: <Ticket size={20} />, label: 'Bez Ochirit', section: 'QO\'SHIMCHA' },
+        { path: '/profile', icon: <User size={20} />, label: 'Profil', section: 'SHAXSIY' },
     ];
 
     const handleLogout = () => {
@@ -27,7 +39,7 @@ export default function Sidebar() {
         <aside className="sidebar">
             <div className="sidebar-header">
                 <div className="sidebar-logo">
-                    <div className="sidebar-logo-icon">рџ’°</div>
+                    <div className="sidebar-logo-icon"><Wallet size={24} /></div>
                     <div>
                         <div className="sidebar-title">Ranomed -2 </div>
                         <div className="sidebar-subtitle">Kassir Panel</div>
@@ -67,11 +79,10 @@ export default function Sidebar() {
                         <div className="sidebar-user-role">Kassir</div>
                     </div>
                     <button className="sidebar-logout-btn" onClick={handleLogout} title="Chiqish">
-                        рџљЄ
+                        <LogOut size={20} />
                     </button>
                 </div>
             </div>
         </aside>
     );
-}
 
