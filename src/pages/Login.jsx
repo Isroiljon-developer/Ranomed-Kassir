@@ -1,15 +1,11 @@
-﻿import { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Eye, EyeOff, Stethoscope, Lock, User } from 'lucide-react';
 import api from '../api';
 
 const Login = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
-  const [formData, setFormData] = useState({
-    username: '',
-    password: ''
-  });
+  const [formData, setFormData] = useState({ username: '', password: '' });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -27,10 +23,9 @@ const Login = () => {
         return;
       }
 
-      const isNurseOrLab = ('cashier' === 'nurse' && (response.user.role === 'nurse' || response.user.role === 'hamshira')) || ('cashier' === 'lab' && (response.user.role === 'lab' || response.user.role === 'laborant'));
-      
-      if (response.user.role !== 'admin' && response.user.role !== 'cashier' && !isNurseOrLab) {
-        setError("Bu panel faqat Kassir uchun! Siz " + response.user.role + " rolidagilar uchun boshqa panelga kirishingiz kerak.");
+      const role = response.user.role;
+      if (role !== 'admin' && role !== 'cashier') {
+        setError("Bu panel faqat Kassir uchun! Siz " + role + " rolidagilar uchun boshqa panelga kirishingiz kerak.");
         setLoading(false);
         return;
       }
@@ -39,104 +34,128 @@ const Login = () => {
       localStorage.setItem('user', JSON.stringify(response.user));
       localStorage.setItem('isLoggedIn', 'true');
       localStorage.setItem('isAuthenticated', 'true');
-      navigate('/dashboard');
+      navigate('/');
     } catch (err) {
       console.error('Login error:', err);
-      setError(err.response?.data?.message || err.message || 'Login yoki parol noto\'g\'ri');
+      setError(err.message || "Login yoki parol noto'g'ri");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-600 via-blue-500 to-cyan-500 flex items-center justify-center p-4">
-      <div className="relative w-full max-w-md">
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-white rounded-2xl shadow-2xl mb-4">
-            <Stethoscope className="w-10 h-10 text-blue-600" />
+    <div style={{
+      minHeight: '100vh',
+      background: 'linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #06b6d4 100%)',
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      padding: '16px', fontFamily: "'Inter', sans-serif",
+    }}>
+      <div style={{ position: 'fixed', inset: 0, overflow: 'hidden', pointerEvents: 'none' }}>
+        <div style={{ position: 'absolute', top: '-20%', right: '-10%', width: 600, height: 600, borderRadius: '50%', background: 'rgba(255,255,255,0.05)' }} />
+        <div style={{ position: 'absolute', bottom: '-15%', left: '-10%', width: 500, height: 500, borderRadius: '50%', background: 'rgba(255,255,255,0.05)' }} />
+      </div>
+
+      <div style={{ position: 'relative', width: '100%', maxWidth: 460 }}>
+        <div style={{ textAlign: 'center', marginBottom: 32 }}>
+          <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 80, height: 80, background: 'white', borderRadius: 20, boxShadow: '0 20px 60px rgba(0,0,0,0.2)', marginBottom: 16 }}>
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" strokeWidth="2">
+              <path d="M4.8 2.3A.3.3 0 1 0 5 2H4a2 2 0 0 0-2 2v5a6 6 0 0 0 6 6 6 6 0 0 0 6-6V4a2 2 0 0 0-2-2h-1a.2.2 0 1 0 .3.3"/>
+              <path d="M8 15v1a6 6 0 0 0 6 6 6 6 0 0 0 6-6v-4"/><circle cx="20" cy="10" r="2"/>
+            </svg>
           </div>
-          <h1 className="text-3xl font-bold text-white">Ranomed - 2</h1>
-          <p className="text-white/80 mt-2 font-medium">Kassir paneli</p>
+          <h1 style={{ fontSize: 32, fontWeight: 700, color: 'white', margin: 0 }}>Ranomed - 2</h1>
+          <p style={{ color: 'rgba(255,255,255,0.8)', marginTop: 6, fontSize: 16, fontWeight: 500 }}>Kassir paneli</p>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-2xl p-8">
-          <div className="text-center mb-6">
-            <h2 className="text-2xl font-bold text-gray-800">Xush kelibsiz!</h2>
-            <p className="text-gray-500 mt-1">Tizimga kirish uchun ma'lumotlarni kiriting</p>
+        <div style={{ background: 'white', borderRadius: 24, padding: 40, boxShadow: '0 25px 80px rgba(0,0,0,0.2)' }}>
+          <div style={{ textAlign: 'center', marginBottom: 28 }}>
+            <h2 style={{ fontSize: 26, fontWeight: 700, color: '#0f172a', margin: 0 }}>Xush kelibsiz!</h2>
+            <p style={{ color: '#64748b', marginTop: 8, fontSize: 15 }}>Tizimga kirish uchun ma'lumotlarni kiriting</p>
           </div>
 
           {error && (
-            <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-600 text-sm text-center">
+            <div style={{ marginBottom: 20, padding: '12px 16px', background: '#fef2f2', border: '1px solid #fecaca', borderRadius: 12, color: '#dc2626', fontSize: 14, textAlign: 'center' }}>
               {error}
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-5">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Login</label>
-              <div className="relative">
-                <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+          <form onSubmit={handleSubmit}>
+            <div style={{ marginBottom: 18 }}>
+              <label style={{ display: 'block', fontSize: 14, fontWeight: 600, color: '#374151', marginBottom: 8 }}>Login</label>
+              <div style={{ position: 'relative' }}>
+                <svg style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', color: '#9ca3af' }} width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+                </svg>
                 <input
-                  type="text"
-                  value={formData.username}
+                  type="text" value={formData.username}
                   onChange={(e) => setFormData({ ...formData, username: e.target.value })}
-                  className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all bg-gray-50"
-                  placeholder="Loginni kiriting"
-                  required
+                  style={{ width: '100%', boxSizing: 'border-box', paddingLeft: 44, paddingRight: 16, paddingTop: 14, paddingBottom: 14, border: '2px solid #e5e7eb', borderRadius: 12, fontSize: 15, outline: 'none', background: '#f9fafb', color: '#0f172a' }}
+                  placeholder="Loginni kiriting" required
+                  onFocus={e => e.target.style.borderColor = '#3b82f6'}
+                  onBlur={e => e.target.style.borderColor = '#e5e7eb'}
                 />
               </div>
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Parol</label>
-              <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+            <div style={{ marginBottom: 24 }}>
+              <label style={{ display: 'block', fontSize: 14, fontWeight: 600, color: '#374151', marginBottom: 8 }}>Parol</label>
+              <div style={{ position: 'relative' }}>
+                <svg style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', color: '#9ca3af' }} width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                </svg>
                 <input
-                  type={showPassword ? 'text' : 'password'}
-                  value={formData.password}
+                  type={showPassword ? 'text' : 'password'} value={formData.password}
                   onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                  className="w-full pl-10 pr-12 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all bg-gray-50"
-                  placeholder="Parolni kiriting"
-                  required
+                  style={{ width: '100%', boxSizing: 'border-box', paddingLeft: 44, paddingRight: 48, paddingTop: 14, paddingBottom: 14, border: '2px solid #e5e7eb', borderRadius: 12, fontSize: 15, outline: 'none', background: '#f9fafb', color: '#0f172a' }}
+                  placeholder="Parolni kiriting" required
+                  onFocus={e => e.target.style.borderColor = '#3b82f6'}
+                  onBlur={e => e.target.style.borderColor = '#e5e7eb'}
                 />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                >
-                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                <button type="button" onClick={() => setShowPassword(!showPassword)} style={{ position: 'absolute', right: 14, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', color: '#9ca3af', padding: 4 }}>
+                  {showPassword ? (
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                  ) : (
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                  )}
                 </button>
               </div>
             </div>
 
-            <button type="submit" className="w-full py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors" disabled={loading}>
+            <button
+              type="submit" disabled={loading}
+              style={{
+                width: '100%', padding: '15px 0',
+                background: loading ? '#93c5fd' : 'linear-gradient(135deg, #3b82f6, #1d4ed8)',
+                color: 'white', border: 'none', borderRadius: 12,
+                fontSize: 16, fontWeight: 600, cursor: loading ? 'not-allowed' : 'pointer',
+                boxShadow: loading ? 'none' : '0 8px 24px rgba(59,130,246,0.4)', transition: 'all 0.2s',
+              }}
+            >
               {loading ? 'Kirish...' : 'Kirish'}
             </button>
           </form>
 
-          {/* Test Login Ma'lumotlari */}
-          <div className="mt-6 pt-5 border-t border-gray-100">
-            <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3 text-center">
+          <div style={{ marginTop: 24, paddingTop: 20, borderTop: '1px solid #f1f5f9' }}>
+            <p style={{ fontSize: 11, fontWeight: 600, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em', textAlign: 'center', marginBottom: 12 }}>
               Sinov uchun login va parol:
             </p>
-            <div 
+            <div
               onClick={() => setFormData({ username: 'cashier', password: 'cashier123' })}
-              className="flex items-center justify-between p-3 rounded-lg bg-gray-50 border border-gray-100 hover:bg-gray-100 cursor-pointer transition-all"
+              style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 16px', borderRadius: 12, background: '#f8fafc', border: '1px solid #e2e8f0', cursor: 'pointer' }}
+              onMouseEnter={e => e.currentTarget.style.background = '#eff6ff'}
+              onMouseLeave={e => e.currentTarget.style.background = '#f8fafc'}
             >
               <div>
-                <p className="text-xs text-gray-500 font-medium">Kassir uchun:</p>
-                <p className="text-sm font-semibold text-gray-700">Login: <span className="font-mono text-blue-600">cashier</span></p>
+                <p style={{ fontSize: 12, color: '#64748b', margin: 0, marginBottom: 2 }}>Kassir uchun:</p>
+                <p style={{ fontSize: 14, fontWeight: 600, color: '#0f172a', margin: 0 }}>Login: <span style={{ color: '#3b82f6', fontFamily: 'monospace' }}>cashier</span></p>
               </div>
-              <div className="text-right">
-                <span className="text-xs text-gray-500 block">Parol:</span>
-                <span className="text-xs font-mono font-bold bg-gray-200 text-gray-700 px-2 py-1 rounded">cashier123</span>
+              <div style={{ textAlign: 'right' }}>
+                <span style={{ fontSize: 12, color: '#64748b', display: 'block', marginBottom: 2 }}>Parol:</span>
+                <span style={{ fontSize: 12, fontFamily: 'monospace', fontWeight: 700, background: '#e2e8f0', color: '#374151', padding: '2px 8px', borderRadius: 6 }}>cashier123</span>
               </div>
             </div>
-            <p className="text-[11px] text-center text-gray-400 mt-2">
-              (Ustiga bossangiz, avtomatik to'ldiriladi)
-            </p>
+            <p style={{ fontSize: 11, textAlign: 'center', color: '#94a3b8', marginTop: 8 }}>(Ustiga bossangiz, avtomatik to'ldiriladi)</p>
           </div>
-
         </div>
       </div>
     </div>
