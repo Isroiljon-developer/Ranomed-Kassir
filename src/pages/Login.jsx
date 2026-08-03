@@ -25,7 +25,7 @@ const Login = () => {
 
       const role = response.user.role;
       if (role !== 'admin' && role !== 'cashier') {
-        setError("Bu panel faqat Kassir uchun! Siz " + role + " rolidagilar uchun boshqa panelga kirishingiz kerak.");
+        setError('Sizda ushbu panelga kirish huquqi yo\'q');
         setLoading(false);
         return;
       }
@@ -34,7 +34,7 @@ const Login = () => {
       localStorage.setItem('user', JSON.stringify(response.user));
       localStorage.setItem('isLoggedIn', 'true');
       localStorage.setItem('isAuthenticated', 'true');
-      navigate('/');
+      navigate('/dashboard');
     } catch (err) {
       console.error('Login error:', err);
       setError(err.message || "Login yoki parol noto'g'ri");
@@ -134,6 +134,7 @@ const Login = () => {
               {loading ? 'Kirish...' : 'Kirish'}
             </button>
           </form>
+
         </div>
       </div>
     </div>
